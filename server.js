@@ -8,6 +8,7 @@ const swaggerOptions = require('./swagger/swagger');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const mongoURI = process.env.MONGO_URI;
 
 // Middleware
 app.use(cors()); // Enable CORS for all routes
@@ -17,7 +18,7 @@ const specs = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(mongoURI)
     .then(() => console.log('MongoDB connected successfully!'))
     .catch(err => console.error('MongoDB connection error:', err));
 
