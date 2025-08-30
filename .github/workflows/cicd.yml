@@ -24,13 +24,15 @@ jobs:
     steps:
       - name: Pull image from docker hub
         run: docker pull chaitu0428/ecom_be:latest
-      - name: Delete old container
-        run: docker run -d -p 4000:4000 --name nodejs-app-container chaitu0428/ecom_be:latest
+
+      - name: Delete old container if exists
+        run: docker rm -f nodejs-app-container || true
+
       - name: Run Docker Container
         run: |
           docker run -d -p 4000:4000 \
             --name nodejs-app-container \
-            -e MONGO_URI=${{ secrets.MONGO_URI }} \
-            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-            -e PORT=${{ secrets.PORT }} \
+            -e MONGO_URI="${{ secrets.MONGO_URI }}" \
+            -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+            -e PORT="${{ secrets.PORT }}" \
             chaitu0428/ecom_be:latest
